@@ -1,5 +1,5 @@
 import Modal from '../UI/Modal';
-import classes from './Cart.module.css';
+import classes from './Cart.module.css'; // Import the CSS file
 const Cart = (props) => {
     const cartItems = <ul className={classes['cart-items']}>{ [
         {
@@ -7,7 +7,7 @@ const Cart = (props) => {
             name: 'Sushi',
             description: 'Finest fish and veggies',
             price: 22.99,
-            amount: 2
+            amount: 2,
         }
     ].map((item) => <li>{item.name}</li>)}</ul>;
 
