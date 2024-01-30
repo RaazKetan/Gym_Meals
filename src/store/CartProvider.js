@@ -5,19 +5,35 @@ const defaultCartState = {
     items: [],
     totalAmount: 0,
 };
-const cartReducer = (state,action) =>{
-    if(action.type === 'ADD'){
-        const updatedItems = state.items.concat(action.item); 
-          //concat() method is used to merge two or more arrays. This method does not change the existing arrays, but instead returns a new array.
-        const updateTotalAmount = state.totalAmount+action.item.price*action.item.amount;
 
-        return{
+const cartReducer = (state = defaultCartState, action) => {
+    if (action.type === 'ADD') {
+        const updateTotalAmount = state.totalAmount + action.item.price * action.item.amount;
+        const existingCartItemIndex = state.items.findIndex(item => item.id === action.item.id);
+        const existingCartItem = state.items[existingCartItemIndex];
+
+        let updatedItems;
+        if (existingCartItem) {
+            const updatedItem = {
+                ...existingCartItem,
+                amount: existingCartItem.amount + action.item.amount,
+            };
+            updatedItems = [...state.items];
+            updatedItems[existingCartItemIndex] = updatedItem;
+        } else {
+            updatedItems = state.items.concat(action.item);
+        }
+
+        return {
             items: updatedItems,
             totalAmount: updateTotalAmount,
         };
     }
+    
+    // Return current state for unknown action types
     return defaultCartState;
 };
+
 
 
 const CartProvider = props => {
