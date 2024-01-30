@@ -29,6 +29,29 @@ const cartReducer = (state = defaultCartState, action) => {
             totalAmount: updateTotalAmount,
         };
     }
+    if(action.type === 'REMOVE') {
+        const existingCartItemIndex = state.items.findIndex(item => item.id === action.id);
+        const existingItem = state.items[existingCartItemIndex];
+        const updateTotalAmount = state.totalAmount - existingItem.price;
+        let updatedItems;
+
+        //if amount is 1, remove the item from the cart
+        if (existingItem.amount === 1) {
+            updatedItems = state.items.filter(item => item.id !== action.id);
+
+        }
+        //if amount is more than 1, decrease the amount by 1
+        else{
+            const updatedItem = {...existingItem, amount: existingItem.amount - 1};
+            updatedItems = [...state.items];
+            updatedItems[existingCartItemIndex] = updatedItem;
+        }
+        return {
+            items: updatedItems,
+            totalAmount: updateTotalAmount,
+        };
+        
+    }
     
     // Return current state for unknown action types
     return defaultCartState;
