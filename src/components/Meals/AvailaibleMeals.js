@@ -6,10 +6,13 @@ import classes from './AvailaibleMeals.module.css';
 
 const AvailaibleMeals = () => {
     const [meals, setMeals] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [httpError, setHttpError] = useState();
 
 
     useEffect(()=>{
         const fetchMeals= async ()=>{
+
         const response =await fetch('https://gymmeals-31031-default-rtdb.firebaseio.com/meals.json')
             const responseData = await response.json();
 
@@ -23,9 +26,17 @@ const AvailaibleMeals = () => {
                 })
             }
             setMeals(loadedMeals);
+            setIsLoading(false);
         };
         fetchMeals();
     }, []);
+
+    if(isLoading){
+        return( <section className={classes.MealsLoading}>
+        <p>Loading ...</p>
+        </section>
+        )
+    }
     const mealsList = meals.map(meal => 
     <MealItem 
     id={meal.id}
