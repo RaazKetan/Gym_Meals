@@ -42,6 +42,13 @@ const cityInputRef = useRef();
         return;
     }
     // submit cart data
+    props.onConfirm({
+      name: enteredName,
+      street: enteredStreet,
+      postal: enteredPostal,
+      city: enteredCity
+      
+    })
   };
   const nameControlClasses = `${classes.control} ${
     formInputsValidity.name ? '' : classes.invalid
